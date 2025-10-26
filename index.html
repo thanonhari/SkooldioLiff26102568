@@ -45,7 +45,12 @@
     console.log("Hello World!")
   </script> -->
 
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <!-- <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script> -->
+    <script
+      charset="utf-8"
+      src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"
+    ></script>
+
     <script>
       function createUniversalLink() {}
 
@@ -61,19 +66,20 @@
 
       async function getFriendship() {}
 
-      async function sendMsg() {}
+      async function sendMsg() {
+        if (liff.getContext().type !== "none") {
+          await liff.sendMessages([
+            {
+              type: "sticker",
+              stickerId: 1,
+              packageId: 1,
+            },
+          ]);
+          alert("Message sent");
+        }
+      }
 
-      function getContext() {}
-
-      async function getUserProfile() {
-        const profile = await liff.getProfile();
-        document.getElementById("pictureUrl").src = profile.pictureUrl;
-        document.getElementById("userId").append(profile.userId);
-        document.getElementById("statusMessage").append(profile.statusMessage);
-        document.getElementById("displayName").append(profile.displayName);
-        document.getElementById("decodedIDToken").append(
-          liff.getDecodedIDToken().email
-        );
+      function getContext() {
         document.getElementById("type").append(liff.getContext().type);
         document.getElementById("viewType").append(liff.getContext().viewType);
         document.getElementById("utouId").append(liff.getContext().utouId);
@@ -82,6 +88,19 @@
         if (liff.getContext().type !== "none") {
           getFriendship();
         }
+      }
+
+      async function getUserProfile() {
+        const profile = await liff.getProfile();
+        document.getElementById("pictureUrl").src = profile.pictureUrl;
+        document.getElementById("userId").append(profile.userId);
+        document.getElementById("statusMessage").append(profile.statusMessage);
+        document.getElementById("displayName").append(profile.displayName);
+        document
+          .getElementById("decodedIDToken")
+          .append(liff.getDecodedIDToken().email);
+        // document.getElementById("type").append(liff.getContext().type);
+        // document.getElementById("viewType").append(liff.getContext().viewType);
       }
 
       function getEnvironment() {
@@ -103,10 +122,11 @@
         // alert("LINE Developers x Skooldio")
         await liff.init({ liffId: "2008360643-Gq9yNV3o" });
         getEnvironment();
-        getUserProfile()
-        // getContext()
+        getUserProfile();
+        getContext();
         // getFriendship()
         // createUniversalLink()
+        // https://classroom.skooldio.com/classroom/6ecbc52f-d152-4aa1-ba32-975aa67bf0cf
       }
       main();
     </script>
